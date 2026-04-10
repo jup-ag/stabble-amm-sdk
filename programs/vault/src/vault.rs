@@ -1,4 +1,3 @@
-use anchor_lang::prelude::borsh;
 use anchor_lang::Discriminator;
 use anchor_lang::{account, solana_program::pubkey::Pubkey, AnchorDeserialize, AnchorSerialize};
 

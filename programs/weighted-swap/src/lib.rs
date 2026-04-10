@@ -29,8 +29,8 @@ pub mod weighted_swap {
     }
 
     /// add liquidity
-    pub fn deposit<'a, 'b, 'c, 'info>(
-        ctx: Context<'_, '_, '_, 'info, Deposit<'info>>,
+    pub fn deposit<'info>(
+        ctx: Context<'info, Deposit<'info>>,
         amounts: Vec<u64>,
         minimum_amount_out: u64,
     ) -> Result<()> {
@@ -38,8 +38,8 @@ pub mod weighted_swap {
     }
 
     /// remove liquidity
-    pub fn withdraw<'a, 'b, 'c, 'info>(
-        ctx: Context<'_, '_, '_, 'info, Withdraw<'info>>,
+    pub fn withdraw<'info>(
+        ctx: Context<'info, Withdraw<'info>>,
         amount: u64,
         minimum_amounts_out: Vec<u64>,
     ) -> Result<()> {

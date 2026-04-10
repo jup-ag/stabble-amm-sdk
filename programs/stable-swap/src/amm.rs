@@ -11,7 +11,8 @@ use jupiter_amm_interface::{
 };
 use math::fixed_math::SCALE;
 use rust_decimal::Decimal;
-use spl_associated_token_account::get_associated_token_address;
+use solana_pubkey::Pubkey as SplPubkey;
+use spl_associated_token_account_interface::address::get_associated_token_address;
 use stabble_vault::pda::get_vault_authority_address;
 use stabble_vault::vault::Vault;
 use std::sync::atomic::Ordering;
@@ -112,10 +113,20 @@ impl Amm for StableSwap {
         } = swap_params;
 
         let vault_authority = get_vault_authority_address(&self.state.vault);
-        let vault_source_token_account = get_associated_token_address(&vault_authority, &source_mint);
-        let vault_destination_token_account = get_associated_token_address(&vault_authority, &destination_mint);
+        let vault_authority_spl = SplPubkey::new_from_array(vault_authority.to_bytes());
+        let source_mint_spl = SplPubkey::new_from_array(source_mint.to_bytes());
+        let destination_mint_spl = SplPubkey::new_from_array(destination_mint.to_bytes());
+        let beneficiary_spl = SplPubkey::new_from_array(self.beneficiary.as_ref().unwrap().to_bytes());
+        let vault_source_token_account = get_associated_token_address(&vault_authority_spl, &source_mint_spl)
+            .to_bytes()
+            .into();
+        let vault_destination_token_account = get_associated_token_address(&vault_authority_spl, &destination_mint_spl)
+            .to_bytes()
+            .into();
         let beneficiary_destination_token_account =
-            get_associated_token_address(&self.beneficiary.as_ref().unwrap(), &destination_mint);
+            get_associated_token_address(&beneficiary_spl, &destination_mint_spl)
+                .to_bytes()
+                .into();
 
         Ok(SwapAndAccountMetas {
             swap: Swap::StabbleStableSwap,
@@ -137,6 +148,10 @@ impl Amm for StableSwap {
 
     fn clone_amm(&self) -> Box<dyn Amm + Send + Sync> {
         Box::new(self.clone())
+    }
+
+    fn get_accounts_len(&self) -> usize {
+        13
     }
 
     fn program_dependencies(&self) -> Vec<(Pubkey, String)> {

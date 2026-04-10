@@ -1,7 +1,7 @@
 use crate::ID;
 use anchor_lang::solana_program::instruction::AccountMeta;
 use anchor_lang::solana_program::pubkey::Pubkey;
-use spl_token::ID as TOKEN_PROGRAM_ID;
+use spl_token_interface::ID as TOKEN_PROGRAM_ID;
 use stabble_vault::ID as VAULT_PROGRAM_ID;
 
 #[derive(Copy, Clone, Debug)]
@@ -33,7 +33,7 @@ impl From<WeightedSwapSwap> for Vec<AccountMeta> {
             AccountMeta::new_readonly(accounts.vault, false),
             AccountMeta::new_readonly(accounts.vault_authority, false),
             AccountMeta::new_readonly(VAULT_PROGRAM_ID, false),
-            AccountMeta::new_readonly(TOKEN_PROGRAM_ID, false),
+            AccountMeta::new_readonly(TOKEN_PROGRAM_ID.to_bytes().into(), false),
         ]
     }
 }

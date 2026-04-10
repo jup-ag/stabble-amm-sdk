@@ -11,8 +11,9 @@ jupiter-amm = [
     "dep:anyhow",
     "dep:rust_decimal",
     "dep:jupiter-amm-interface",
-    "dep:spl-token",
-    "dep:spl-associated-token-account",
+    "dep:solana-pubkey",
+    "dep:spl-token-interface",
+    "dep:spl-associated-token-account-interface",
 ]
 
 [dependencies]
@@ -20,8 +21,9 @@ anchor-lang = { workspace = true }
 anyhow = { workspace = true, optional = true }
 rust_decimal = { workspace = true, optional = true }
 jupiter-amm-interface = { workspace = true, optional = true }
-spl-token = { workspace = true, optional = true }
-spl-associated-token-account = { workspace = true, optional = true }
+solana-pubkey = { workspace = true, optional = true }
+spl-token-interface = { workspace = true, optional = true }
+spl-associated-token-account-interface = { workspace = true, optional = true }
 bn = { path = "../../libraries/bn" }
 math = { path = "../../libraries/math" }
 stabble-vault = { path = "../vault" }
